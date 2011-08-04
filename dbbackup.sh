@@ -5,17 +5,17 @@ path_prefix=$(cd "$(dirname "$0")"; pwd)
 # export moodle database
 dbmoodle="moodledb"$fmtdate
 moodleoutpath=$path_prefix/$dbmoodle
-/usr/bin/mysqldump -u moodle -pdzxxneuqcsmoodle -e -C -Q --create-options --skip-lock-tables moodle > $moodleoutpath.sql
+/usr/bin/mysqldump -u moodle -p -e -C -Q --create-options --skip-lock-tables moodle > $moodleoutpath.sql
 
 # export student database
 dbstudent="studentdb"$fmtdate
 studentoutpath=$path_prefix/$student
-/usr/bin/mysqldump -u attendance -pdzxxneuqcsattendance -e -C -Q --create-options --skip-lock-tables student > $studentoutpath.sql
+/usr/bin/mysqldump -u attendance -p -e -C -Q --create-options --skip-lock-tables student > $studentoutpath.sql
 
 # export wiki database
 dbwiki="wikidb"$fmtdate
 wikioutpath=$path_prefix/$dbwiki
-/usr/bin/mysqldump -u wiki -pdzxxneuqcswiki -e -C -Q --create-options --skip-lock-tables wiki > $wikioutpath.sql
+/usr/bin/mysqldump -u wiki -p -e -C -Q --create-options --skip-lock-tables wiki > $wikioutpath.sql
 
 # compress database file into file
 /bin/tar czf $path_prefix/dbbackup$fmtdate.tgz -C $path_prefix *$fmtdate.sql
