@@ -1,13 +1,24 @@
 #!/usr/bin/python2.7
 # -*- coding: utf-8 -*-
 
+# init 
 import sys
 import codecs
-
+from os.path import basename
 reload(sys)
 sys.setdefaultencoding('utf8')
 
-csv_filename = sys.argv[1].split('.')[0]
+# check argument
+if len(sys.argv) != 3:
+    print u'请输入正确的参数：{0} [csv文件名], [专业名]\n'.format(sys.argv[0])
+    exit()
+pyfilename = basename(sys.argv[0])
+print basename(sys.argv[1])
+csv_filename = basename(sys.argv[1]).split('.')[0]
+
+if len(csv_filename) != 3 or not csv_filename.isdigit():
+    print u'csv文件名不符合规范，请修改为学号的前三位以标识系别与年级\n'
+
 
 
 ldif_tmpl = '\
@@ -38,11 +49,6 @@ department = {'1' : '经济系',
               '7' : '信息与计算科学系',
               '8' : '材料系', 
               '9' : '环境系'}
-
-if len(sys.argv) != 3:
-    print '请输入正确的参数：{0} [csv文件名], [专业名]\n'.format(sys.argv[0])
-if len(csv_filename) != 3 or not csv_filename.isdigit():
-    print 'csv文件名不符合规范，请修改为学号的前三位以标识系别与年级\n'
 
 csv_file = codecs.open(sys.argv[1], 'r', "utf-8")
 ldif_file = codecs.open('./{0}.ldif'.format(csv_filename), 'w', "utf-8");
