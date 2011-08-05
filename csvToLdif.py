@@ -22,16 +22,16 @@ if len(csv_filename) != 3 or not csv_filename.isdigit():
 
 
 ldif_tmpl = '\
-dn: cn={4},ou={3},ou={2},ou={1},cn={0},ou=People,dc=neuq,dc=edu.cn\n\
+dn: cn={3},ou={2},ou={1},cn={0},ou=People,dc=neuq,dc=edu.cn\n\
 objectClass: inetOrgPerson\n\
 objectClass: top\n\
-cn: {5}\n\
-sn: {6}\n\
-givenName: {7}\n\
-displayName: {8}\n\
-departmentNumber: {9}\n\
-userPassword: {10}\n\
-roomNumber: {11}\n\n'
+cn: {4}\n\
+sn: {5}\n\
+givenName: {6}\n\
+displayName: {7}\n\
+departmentNumber: {8}\n\
+userPassword: {9}\n\
+roomNumber: {10}\n\n'
 
 create_grade_tree = '\
 dn: ou={2},ou={1},cn={0},ou=People,dc=neuq,dc=edu.cn\n\
@@ -65,7 +65,7 @@ try:
             lastname = fullname[:2]
             firstname = fullname[2:]
         classnum = idnumber[:5]
-        ldif_item = ldif_tmpl.format('学生', dept, grade, idnumber, idnumber, lastname, firstname, fullname, dept, pro, "{MD5}ISGMyneATSuhkiwz4BURBQ==", classnum)
+        ldif_item = ldif_tmpl.format('学生', dept, grade, idnumber, idnumber, lastname, firstname, fullname, dept, "{MD5}ISGMyneATSuhkiwz4BURBQ==", classnum)
         ldif_file.writelines(ldif_item)
 finally:
     ldif_file.close()
