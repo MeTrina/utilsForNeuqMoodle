@@ -141,7 +141,7 @@ for i in range(1, files_to_convert+1):
         ldif_file.writelines(create_grade_tree.format('学生', dept, grade, grade))
         for line in csv_file:
             idnumber, fullname = line.rstrip().split(',')
-            if len(fullname) <= 3 and fullname[0] in single_lastname_set:
+            if len(fullname) <= 2 or (len(fullname) == 3 and fullname[0] in single_lastname_set):
                 lastname = fullname[:1]
                 firstname = fullname[1:]
             else:
