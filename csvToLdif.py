@@ -125,7 +125,7 @@ single_lastname_set = [
 
 # main
 
-ldif_file = codecs.open('{0}/import.ldif'.format(pydirname), 'w+', "utf-8");
+ldif_file = codecs.open('{0}/import.ldif'.format(pydirname), 'a+', "utf-8");
 
 for i in range(1, files_to_convert+1):
     csv_filename = basename(sys.argv[i]).split('.')[0]
@@ -141,15 +141,16 @@ for i in range(1, files_to_convert+1):
         ldif_file.writelines(create_grade_tree.format('学生', dept, grade, grade))
         for line in csv_file:
             idnumber, fullname = line.rstrip().split(',')
-            if len(fullname) <= 2 or (len(fullname) == 3 and fullname[0] in single_lastname_set):
+            if len(fullname) > 3 or not fullname[0] in single_lastname_set:
+                print u'注意:可能有需要手动修改的学生{0}:{1} [回车确认]'.format(idnumber, fullname),
+                raw_input()
+                print u''
+            if len(fullname) <= 3:
                 lastname = fullname[:1]
                 firstname = fullname[1:]
             else:
                 lastname = fullname[:2]
                 firstname = fullname[2:]
-                print u'注意:可能有需要手动修改的学生{0}:{1} [回车确认]'.format(idnumber, fullname),
-                raw_input()
-                print u''
             classnum = idnumber[:5]
             ldif_item = ldif_tmpl.format('学生', dept, grade, idnumber, idnumber, lastname, firstname, fullname, dept, "{MD5}ISGMyneATSuhkiwz4BURBQ==", classnum)
             ldif_file.writelines(ldif_item)
