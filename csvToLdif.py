@@ -9,8 +9,8 @@ reload(sys)
 sys.setdefaultencoding('utf8')
 
 # check argument
-if len(sys.argv) != 3:
-    print u'请输入正确的参数：{0} [csv文件名], [专业名]\n'.format(sys.argv[0])
+if len(sys.argv) != 2:
+    print u'请输入正确的参数：{0} [csv文件名]\n'.format(sys.argv[0])
     exit()
 pyfilename = basename(sys.argv[0])
 print basename(sys.argv[1])
@@ -29,16 +29,15 @@ cn: {5}\n\
 sn: {6}\n\
 givenName: {7}\n\
 displayName: {8}\n\
-o: {9}\n\
-departmentNumber: {10}\n\
-userPassword: {11}\n\
-roomNumber: {12}\n\n'
+departmentNumber: {9}\n\
+userPassword: {10}\n\
+roomNumber: {11}\n\n'
 
 create_grade_tree = '\
-dn: ou={3},ou={2},ou={1},cn={0},ou=People,dc=neuq,dc=edu.cn\n\
+dn: ou={2},ou={1},cn={0},ou=People,dc=neuq,dc=edu.cn\n\
 objectClass: organizationalUnit\n\
 objectClass: top\n\
-ou: {4}\n\n'
+ou: {3}\n\n'
 
 department = {'1' : '经济系',
               '2' : '管理系',
@@ -55,8 +54,7 @@ ldif_file = codecs.open('./{0}.ldif'.format(csv_filename), 'w', "utf-8");
 try:
     dept = department[csv_filename[0]]
     grade = ''.join(["20", csv_filename[1:3]])
-    pro = sys.argv[2]
-    ldif_file.writelines(create_grade_tree.format('学生', dept, pro, grade, grade))
+    ldif_file.writelines(create_grade_tree.format('学生', dept, grade, grade))
     for line in csv_file:
         idnumber, fullname = line.rstrip().split(',')
         if len(fullname) <= 3:
@@ -67,7 +65,7 @@ try:
             lastname = fullname[:2]
             firstname = fullname[2:]
         classnum = idnumber[:5]
-        ldif_item = ldif_tmpl.format('学生', dept, pro, grade, idnumber, idnumber, lastname, firstname, fullname, dept, pro, "{MD5}ISGMyneATSuhkiwz4BURBQ==", classnum)
+        ldif_item = ldif_tmpl.format('学生', dept, grade, idnumber, idnumber, lastname, firstname, fullname, dept, pro, "{MD5}ISGMyneATSuhkiwz4BURBQ==", classnum)
         ldif_file.writelines(ldif_item)
 finally:
     ldif_file.close()
